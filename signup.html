@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ShadowX</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <img src="images/image logo 2.png" alt="Logo" class="logo">
+        <h1 class="header-title">ShadowX - Secure File Transfer</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Animated Card -->
+        <div class="card animated-card">
+            <h2>Join ShadowX</h2>
+            <p>Create your secure account for encrypted file transfer and communication.</p>
+            <ul style="text-align: left; margin-top: 20px;">
+                <li>End-to-end encryption</li>
+                <li>Secure file sharing</li>
+                <li>Encrypted chat</li>
+                <li>Transaction logging</li>
+            </ul>
+        </div>
+
+        <!-- Right Signup Card -->
+        <div class="card login-card">
+            <h2>Create Account</h2>
+            <form id="signupForm" onsubmit="handleSignup(event)">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="fullname">Full Name:</label>
+                    <input type="text" id="fullname" name="fullname" required>
+                </div>
+
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required 
+                           pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" 
+                           title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters">
+                </div>
+
+                <!-- Confirm Password -->
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+
+                <!-- 6 Digit PIN -->
+                <div class="form-group">
+                    <label for="pin">Create 6-Digit PIN:</label>
+                    <input type="text" id="pin" name="pin" maxlength="6" pattern="[0-9]{6}" required>
+                </div>
+
+                <!-- Signup Button -->
+                <button type="submit">Create Secure Account</button>
+
+                <!-- Login Link -->
+                <p class="signup-link">Already have an account? <a href="index.html">Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>© 2025 ShadowX. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function handleSignup(event) {
+            event.preventDefault();
+            
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+            const pin = document.getElementById('pin').value;
+
+            // Validate password match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Validate password strength
+            const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
+            if (!passwordRegex.test(password)) {
+                alert('Password must contain at least 8 characters, including uppercase, lowercase, and numbers');
+                return;
+            }
+
+            // Validate PIN
+            if (pin.length !== 6 || !/^\d+$/.test(pin)) {
+                alert('PIN must be exactly 6 digits');
+                return;
+            }
+
+            // Create user data
+            const userData = {
+                fullname: fullname,
+                email: email,
+                userId: 'SHADOWX_' + Math.random().toString(36).substr(2, 9),
+                createdAt: new Date().toISOString()
+            };
+
+            // Store user data (in a real app, this would be sent to a server)
+            localStorage.setItem('shadowx_user_' + email, JSON.stringify(userData));
+            alert('Account created successfully! Please login to continue.');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html> 
