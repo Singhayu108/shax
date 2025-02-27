@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ShadowX</title>
+    <link rel="stylesheet" href="dash.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <script>
+        // Check authentication
+        window.onload = function() {
+            const session = localStorage.getItem('shadowx_session');
+            if (!session) {
+                window.location.href = '../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            document.getElementById('welcome-message').textContent = `Welcome, ${userData.email}`;
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('shadowx_session');
+            window.location.href = '../index.html';
+        }
+
+        function navigateTo(path) {
+            window.location.href = path;
+        }
+    </script>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <img src="../images/image logo 2.png" alt="ShadowX Logo" class="logo">
+        <h2 class="brand-name">ShadowX</h2>
+        <ul>
+            <li><a href="dash.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="files/upload.html"><i class="fas fa-file-upload"></i> File Upload</a></li>
+            <li><a href="files/download.html"><i class="fas fa-file-download"></i> File Download</a></li>
+            <li><a href="../chat/chat.html"><i class="fas fa-comments"></i> Chat</a></li>
+            <li><a href="../profile/user.html"><i class="fas fa-user"></i> User Profile</a></li>
+            <li><a href="../logs/logs.html"><i class="fas fa-list"></i> Transaction Logs</a></li>
+            <li><a href="#" onclick="handleLogout()" class="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="main-content">
+        <header>
+            <h2 id="welcome-message">Welcome to ShadowX</h2>
+        </header>
+        <div class="dashboard-grid">
+            <div class="card" onclick="navigateTo('files/upload.html')">
+                <i class="fas fa-file-upload fa-3x"></i>
+                <h3>File Upload</h3>
+                <p>Securely upload files with end-to-end encryption.</p>
+            </div>
+            <div class="card" onclick="navigateTo('files/download.html')">
+                <i class="fas fa-file-download fa-3x"></i>
+                <h3>File Download</h3>
+                <p>Access and retrieve your shared files.</p>
+            </div>
+            <div class="card" onclick="navigateTo('../chat/chat.html')">
+                <i class="fas fa-comments fa-3x"></i>
+                <h3>Chat</h3>
+                <p>Communicate securely with your team.</p>
+            </div>
+            <div class="card" onclick="navigateTo('../logs/logs.html')">
+                <i class="fas fa-list fa-3x"></i>
+                <h3>Transaction Logs</h3>
+                <p>View all your file transfer logs and activities.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

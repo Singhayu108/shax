@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload - ShadowX</title>
+    <link rel="stylesheet" href="file.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <script>
+        // Check authentication
+        window.onload = function() {
+            const session = localStorage.getItem('shadowx_session');
+            if (!session) {
+                window.location.href = '../../index.html';
+                return;
+            }
+        }
+
+        function handleUpload(event) {
+            event.preventDefault();
+            const file = document.getElementById('file').files[0];
+            const recipient = document.getElementById('recipient').value;
+            const status = document.getElementById('upload-status');
+
+            if (file && recipient) {
+                status.textContent = "Encrypting and uploading file...";
+                status.style.color = "#ffeb3b";
+                
+                // Simulate upload process
+                setTimeout(() => {
+                    status.textContent = "File uploaded successfully!";
+                    status.style.color = "#00ff00";
+                    
+                    // Add to logs
+                    const logData = {
+                        event: "File Upload",
+                        details: `File "${file.name}" encrypted and uploaded to ${recipient}`
+                    };
+                    console.log("Log:", logData);
+                }, 2000);
+            } else {
+                status.textContent = "Please select a file and enter recipient ID";
+                status.style.color = "#ff0000";
+            }
+        }
+    </script>
+
+    <div class="container">
+        <a href="../dash.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <h2><i class="fas fa-upload"></i> Secure File Upload</h2>
+        <form id="upload-form" onsubmit="handleUpload(event)">
+            <label for="file">Select File:</label>
+            <input type="file" id="file" required>
+            
+            <label for="recipient">Recipient ID:</label>
+            <input type="text" id="recipient" placeholder="Enter recipient's ID" required>
+            
+            <button type="submit">Encrypt & Upload</button>
+        </form>
+        <p id="upload-status"></p>
+    </div>
+</body>
+</html>

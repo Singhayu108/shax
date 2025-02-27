@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encrypted Chat - ShadowX</title>
+    <link rel="stylesheet" href="chat.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+
+    <div class="chat-container">
+        <a href="../dashboard/dash.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <h2>🔐 ShadowX Encrypted Chat</h2>
+        <div class="chat-box" id="chat-box">
+            <!-- Messages will appear here -->
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message" placeholder="Type your encrypted message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        window.onload = function() {
+            const session = localStorage.getItem('shadowx_session');
+            if (!session) {
+                window.location.href = '../index.html';
+                return;
+            }
+            const userData = JSON.parse(session);
+            displayMessage(`Connected as: ${userData.email}`, "system");
+        }
+
+        const encryptionKey = "SHADOWX_SECRET_KEY"; // Change this to a secure key
+        const socket = new WebSocket("wss://yourserver.com/chat"); // Replace with actual WebSocket server
+
+        // Encrypt Message
+        function encryptMessage(message) {
+            return CryptoJS.AES.encrypt(message, encryptionKey).toString();
+        }
+
+        // Decrypt Message
+        function decryptMessage(encrypted) {
+            let bytes = CryptoJS.AES.decrypt(encrypted, encryptionKey);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+
+        // Send Message
+        function sendMessage() {
+            const messageInput = document.getElementById("message");
+            const encryptedMessage = encryptMessage(messageInput.value);
+            socket.send(encryptedMessage);
+            displayMessage(`You: ${messageInput.value}`, "sent");
+            messageInput.value = "";
+        }
+
+        // Receive Messages
+        socket.onmessage = function(event) {
+            const decryptedMessage = decryptMessage(event.data);
+            displayMessage(`User: ${decryptedMessage}`, "received");
+        };
+
+        // Handle Enter key press
+        document.getElementById("message").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Display Messages
+        function displayMessage(message, type) {
+            const chatBox = document.getElementById("chat-box");
+            const messageElement = document.createElement("div");
+            messageElement.classList.add("message", type);
+            messageElement.innerText = message;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Display initial message
+        displayMessage("Welcome to ShadowX Encrypted Chat! Your messages are end-to-end encrypted.", "system");
+    </script>
+
+</body>
+</html>

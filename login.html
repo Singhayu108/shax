@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShadowX - Secure File Transfer</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <img src="images/image logo 2.png" alt="Logo" class="logo">
+        <h1 class="header-title">ShadowX - Secure File Transfer</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Left Animated Card -->
+        <div class="card animated-card">
+            <h2>Animated Card</h2>
+        </div>
+
+        <!-- Right Login Card -->
+        <div class="card login-card">
+            <h2>Login</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- Session ID -->
+                <div class="form-group">
+                    <label for="session-id">Session ID:</label>
+                    <input type="text" id="session-id" name="session-id" required>
+                </div>
+
+                <!-- Email Input -->
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <!-- Password Input -->
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <!-- 6 Digit PIN -->
+                <div class="form-group">
+                    <label for="pin">6-Digit PIN:</label>
+                    <input type="text" id="pin" name="pin" maxlength="6" required>
+                </div>
+
+                <!-- Login Button -->
+                <button type="submit">Secure Login</button>
+
+                <!-- Sign Up Option -->
+                <p class="signup-link">Don't have an account? <a href="#">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>© 2025 ShadowX. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            // Get form values
+            const sessionId = document.getElementById('session-id').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const pin = document.getElementById('pin').value;
+
+            // Basic validation
+            if (sessionId && email && password && pin.length === 6) {
+                // In a real app, you would verify credentials with a server
+                // For demo, we'll just redirect to dashboard
+                window.location.href = 'dashboard/dash.html';
+            } else {
+                alert('Please fill all fields correctly');
+            }
+        }
+    </script>
+</body>
+</html>

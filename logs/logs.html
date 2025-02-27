@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Logs - ShadowX</title>
+    <link rel="stylesheet" href="log.css">
+</head>
+<body>
+
+    <div class="logs-container">
+        <a href="../dashboard/dash.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+        <h2>📜 Transaction Logs</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>🔢 Log ID</th>
+                    <th>📅 Timestamp</th>
+                    <th>🛡️ Event Type</th>
+                    <th>👤 User</th>
+                    <th>📝 Details</th>
+                </tr>
+            </thead>
+            <tbody id="logs-table">
+                <!-- Dynamic data will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Check authentication
+        window.onload = function() {
+            const session = localStorage.getItem('shadowx_session');
+            if (!session) {
+                window.location.href = '../index.html';
+                return;
+            }
+            loadLogs();
+        }
+
+        // Sample Data (Replace with Backend API Call)
+        const logsData = [
+            { id: 1, timestamp: new Date().toLocaleString(), event: "File Upload", user: "User123", details: "Encrypted file uploaded (CID: abc123)" },
+            { id: 2, timestamp: new Date().toLocaleString(), event: "File Download", user: "User456", details: "Decrypted file downloaded (CID: abc123)" },
+            { id: 3, timestamp: new Date().toLocaleString(), event: "Login Attempt", user: "User123", details: "Successful login from 192.168.1.1" },
+            { id: 4, timestamp: new Date().toLocaleString(), event: "Chat Message", user: "User789", details: "Encrypted message sent" }
+        ];
+
+        function loadLogs() {
+            const table = document.getElementById("logs-table");
+            table.innerHTML = ''; // Clear existing logs
+            logsData.forEach(log => {
+                let row = `<tr>
+                    <td>${log.id}</td>
+                    <td>${log.timestamp}</td>
+                    <td>${log.event}</td>
+                    <td>${log.user}</td>
+                    <td>${log.details}</td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+        }
+
+        // Auto-refresh logs every 30 seconds
+        document.addEventListener("DOMContentLoaded", loadLogs);
+        setInterval(loadLogs, 30000);
+    </script>
+
+</body>
+</html>
